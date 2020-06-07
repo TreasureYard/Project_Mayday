@@ -6,9 +6,9 @@ public class Walls : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.tag == "projectile")
+        if(col.gameObject.tag == "projectile")
         {
-            Destroy(col);
+            Destroy(col.gameObject);
         }
     }
 }
