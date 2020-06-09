@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Walls : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D col)
     {
-        if(col.gameObject.tag == "projectile")
+        if (col.gameObject.tag == "projectile")
         {
             Destroy(col.gameObject);
         }

@@ -129,4 +129,12 @@ public class PlayerMove : MonoBehaviour
       
 
     }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "projectile")
+        {
+            Destroy(col.gameObject);
+        }
+    }
 }

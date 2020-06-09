@@ -14,7 +14,7 @@ public class PlayerShoot : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            GameObject projectile = Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
+             Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
             
         }
     }

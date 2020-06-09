@@ -6,6 +6,7 @@ public class PlayerDetect : MonoBehaviour
 {
     public bool playerDetected;
 
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
@@ -20,5 +21,7 @@ public class PlayerDetect : MonoBehaviour
         {
             playerDetected = false;
         }
+
+      
     }
 }

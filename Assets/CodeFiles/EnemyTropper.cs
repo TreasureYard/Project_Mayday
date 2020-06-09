@@ -9,31 +9,96 @@ public class EnemyTropper : MonoBehaviour
     private SpriteRenderer SR;
     private SpriteRenderer SRarm;
     public PlayerDetect PD;
+    private Quaternion originalPos_arm;
+    private float timecount = 0.1f;
+
+    
+    public Transform barrel;
+    private bool IsFire;
+    private float bulletBurst = 0f;
+    public float fireDelaytime = 0.5f;
+    private bool spottedDelay = true;
+
+    public GameObject projectilePrefab;
+
     // Start is called before the first frame update
     void Start()
     {
+        originalPos_arm = Arm.transform.rotation;
         SRarm = Arm.GetComponent<SpriteRenderer>();
-        SR = GetComponent<SpriteRenderer>();    
+        SR = GetComponent<SpriteRenderer>();
+        StartCoroutine(burstFire());
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
         // Get Angle in Radians
         float AngleRad = Mathf.Atan2(Arm.transform.position.y- Player.transform.position.y, Arm.transform.position.x - Player.transform.position.x);
 
         // Rotate Object
         float AngleDeg = (180 / Mathf.PI) * AngleRad; //+ addangle;
 
-
-        if (AngleDeg >= -35 && PD.playerDetected && Vector3.Distance(Player.transform.position, transform.position) < 100) 
+        if (AngleDeg >= -40 && PD.playerDetected && Vector3.Distance(Player.transform.position, transform.position) < 25) 
         {
+            IsFire = true;
+            
             Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+          
         }
-        
+        else if(!PD.playerDetected || Vector3.Distance(Player.transform.position, transform.position) > 25)
+        {
+            
+            Arm.transform.rotation = Quaternion.Slerp(Arm.transform.rotation, originalPos_arm, timecount);
+            IsFire = false;
+            
+            //timecount = timecount + Time.deltaTime;
+            //Arm.transform.rotation = Quaternion.Euler(0, 0, transform.localEulerAngles.z);
+        }
+
        
+
+    }
+
+    IEnumerator burstFire()
+    {
+        while(true)
+        {
+
+            
+            if (IsFire && spottedDelay)
+            {
+                yield return new WaitForSeconds(fireDelaytime);
+                spottedDelay = false;
+            }
+            else if(IsFire && !spottedDelay)
+            {
+                yield return new WaitForSeconds(0.5f);
+
+                Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
+                yield return new WaitForSeconds(0.1f);
+                Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
+                yield return new WaitForSeconds(0.1f);
+                Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
+            }
+            yield return null;
+        }
        
+
     }
 
     
+   
+
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "projectile")
+        {
+            Destroy(col.gameObject);
+        }
+    }
+
 }
