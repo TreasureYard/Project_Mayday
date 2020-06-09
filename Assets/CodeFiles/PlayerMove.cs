@@ -107,8 +107,7 @@ public class PlayerMove : MonoBehaviour
             //transform.position += transform.right * Input.GetAxis("Horizontal") * thrust * Time.deltaTime;
             //transform.position += transform.up * Input.GetAxis("Vertical") * thrust * Time.deltaTime;
 
-            //rb2D.AddForce(-transform.right * Input.GetAxis("Horizontal") * thrust, ForceMode2D.Force);
-            //rb2D.AddForce(transform.up * Input.GetAxis("Vertical") * thrust, ForceMode2D.Force);
+           
 
              rb2D.AddForce(Vector2.right * Input.GetAxis("Horizontal") * thrust, ForceMode2D.Force);
              rb2D.AddForce(Vector2.up * Input.GetAxis("Vertical") * thrust, ForceMode2D.Force);

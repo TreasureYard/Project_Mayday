@@ -720,7 +720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 519420031}
   thrust: 80
-  CO: 0
+  CO: 2
 --- !u!95 &1349416675
 Animator:
   serializedVersion: 3
