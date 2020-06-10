@@ -10,5 +10,12 @@ public class Walls : MonoBehaviour
         {
             Destroy(col.gameObject);
         }
+
+        if (col.gameObject.tag == "EnemyProjectile")
+        {
+            Destroy(col.gameObject);
+        }
     }
+
+  
 }
