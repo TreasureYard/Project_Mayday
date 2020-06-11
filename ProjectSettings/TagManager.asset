@@ -19,9 +19,9 @@ TagManager:
   - Walls
   - Player
   - Enemies
-  - 
-  - 
-  - 
+  - Detector
+  - EnemyProjectile
+  - PlayerProjectile
   - 
   - 
   - 
