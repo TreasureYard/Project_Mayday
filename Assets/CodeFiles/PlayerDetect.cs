@@ -12,13 +12,27 @@ public class PlayerDetect : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             playerDetected = true;
+            /*
+            if(PlayerMove.IsCloaking)
+            {
+                playerDetected = false;
+            }
+            else
+            {
+                playerDetected = true;
+            }
+            */
+
         }
+
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
+           
             playerDetected = false;
         }
 

@@ -17,6 +17,10 @@ public class PlayerMove : MonoBehaviour
     public enum ControlOptions {AD, WS, WASD};
     public ControlOptions CO = ControlOptions.AD ;
 
+    public static bool IsCloaking = false;
+    private Color32 originalColor = new Color32(255, 255, 255, 255);
+    private Color32 cloakColor = new Color32(255, 255, 255, 80);
+
     private bool ADforward = true;
     private bool WSforward = false;
     private bool traditionalWASD = false;
@@ -26,18 +30,11 @@ public class PlayerMove : MonoBehaviour
         SR = GetComponent<SpriteRenderer>();
         originalThrust = thrust;
         rb2D = GetComponent<Rigidbody2D>();
-       
-        
     }
 
    
     void Update()
     {
-        
-        //Vector2 dir = Input.mousePosition - mainCam.WorldToScreenPoint(transform.position);
-        //float angle = Mathf.Atan2(dir.x , dir.y) * Mathf.Rad2Deg + addangle;
-        //transform.rotation = Quaternion.AngleAxis(angle , -Vector3.forward);
-
         
         // Get Angle in Radians
         float AngleRad = Mathf.Atan2(Input.mousePosition.y - mainCam.WorldToScreenPoint(transform.position).y, Input.mousePosition.x - mainCam.WorldToScreenPoint(transform.position).x);
@@ -59,8 +56,16 @@ public class PlayerMove : MonoBehaviour
         {
            SR.flipY = false;
         }
-        
-        switch(CO)
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            IsCloaking = !IsCloaking;
+        }
+        CloakAbility();
+
+
+
+        switch (CO)
         {
             case ControlOptions.AD: 
             ADforward = true;
@@ -84,6 +89,18 @@ public class PlayerMove : MonoBehaviour
        
     }
 
+    void CloakAbility()
+    {
+        if(IsCloaking)
+        {
+            SR.color = Color.Lerp(SR.color, cloakColor, 0.08f);
+        }
+        else
+        {
+            SR.color = Color.Lerp(SR.color, originalColor, 0.08f);
+        }
+    }
+
 
 
     void FixedUpdate()
@@ -91,24 +108,19 @@ public class PlayerMove : MonoBehaviour
        
         if(ADforward)
         {
-           //transform.position += transform.right * Input.GetAxis("Horizontal") * thrust * Time.deltaTime;
-           
+           //transform.position += transform.right * Input.GetAxis("Horizontal") * thrust * Time.deltaTime
            rb2D.AddForce(transform.right * Input.GetAxis("Horizontal") * thrust, ForceMode2D.Force);
             
         }
         else if(WSforward)
         {
-           //transform.position += -transform.right * Input.GetAxis("Vertical") * thrust * Time.deltaTime;
+           
            rb2D.AddForce(-transform.right * Input.GetAxis("Vertical") * thrust, ForceMode2D.Force);
 
         }
         else if(traditionalWASD)
         {
-            //transform.position += transform.right * Input.GetAxis("Horizontal") * thrust * Time.deltaTime;
-            //transform.position += transform.up * Input.GetAxis("Vertical") * thrust * Time.deltaTime;
-
-           
-
+          
              rb2D.AddForce(Vector2.right * Input.GetAxis("Horizontal") * thrust, ForceMode2D.Force);
              rb2D.AddForce(Vector2.up * Input.GetAxis("Vertical") * thrust, ForceMode2D.Force);
 

@@ -36,6 +36,10 @@ public class EnemyTropper : MonoBehaviour
 
     }
 
+
+    
+
+
     // Update is called once per frame
     void Update()
     {
@@ -51,17 +55,77 @@ public class EnemyTropper : MonoBehaviour
 
 
         Vector2 toTarget = (Player.transform.position - transform.position).normalized;
+        
 
+        if (Vector2.Dot(toTarget, -transform.right) > 0 && Vector3.Distance(Player.transform.position, transform.position) < 25)
+        {
+          
+            if (PD.playerDetected && !PlayerMove.IsCloaking)
+            {
+                Debug.Log("1");
+               
+                Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+
+                IsFire = true;
+            }
+            else if(!PlayerMove.IsCloaking)
+            {
+               
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+                SRarm.flipY = false;
+                IsFire = false;
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                Arm.transform.rotation = Quaternion.Euler(0, 0, 0);
+                SRarm.flipY = false;
+                IsFire = false;
+            }
+          
+        }
+        else if (Vector2.Dot(toTarget, transform.right) > 0 && Vector3.Distance(Player.transform.position, transform.position) < 25)
+        {
+            if (PD.playerDetected)
+            {
+                
+
+                Debug.Log("2");
+                IsFire = false;
+                SRarm.flipY = true;
+
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+
+                //Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+            }
+            else
+            {
+                IsFire = false;
+                SRarm.flipY = false;
+
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+           
+          
+        }
+       
+
+       
+
+
+        /*
         if (Vector2.Dot(toTarget, -transform.right) > 0 && PD.playerDetected && Vector3.Distance(Player.transform.position, transform.position) < 25)
         {
-            
 
+            Debug.Log("detected");
             Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
 
             IsFire = true;
         }
         else if(Vector2.Dot(toTarget, transform.right) > 0 && !PD.playerDetected && Vector3.Distance(Player.transform.position, transform.position) < 25)
         {
+            Debug.Log("not detected");
             //Debug.Log(AngleDeg);
             transform.rotation = Quaternion.Euler(0, 180, 0);
             
@@ -72,13 +136,16 @@ public class EnemyTropper : MonoBehaviour
         }
         else
         {
+            Debug.Log("else");
             transform.rotation = Quaternion.Euler(0, 0, 0);
-            arm_ac.SetBool("IsFiring", false);
+           
             SRarm.flipY = false;
             IsFire = false;
         }
-        
+        */
     }
+
+    
 
     IEnumerator burstFire()
     {
@@ -98,28 +165,35 @@ public class EnemyTropper : MonoBehaviour
                 
                 yield return new WaitForSeconds(2f);
 
-                arm_ac.SetTrigger("IsFiring");
-                Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
-                
-                yield return new WaitForSeconds(0.2f);
-                //arm_ac.SetTrigger("IsFiring");
-                Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
-                
-                yield return new WaitForSeconds(0.2f);
-                //arm_ac.SetTrigger("IsFiring");
-                Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
-                arm_ac.SetTrigger("NotFiring");
+                if(IsFire)
+                {
+                    arm_ac.SetTrigger("IsFiring");
+                    Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
 
+                    yield return new WaitForSeconds(0.2f);
+                    //arm_ac.SetTrigger("IsFiring");
+                    Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
+
+                    yield return new WaitForSeconds(0.2f);
+                    //arm_ac.SetTrigger("IsFiring");
+                    Instantiate(projectilePrefab, barrel.transform.position, barrel.rotation);
+                    arm_ac.SetTrigger("NotFiring");
+                }
+              
             }
+            else
+            {
+                arm_ac.SetTrigger("NotFiring");
+                yield return null;
+            }
+           
             yield return null;
         }
        
 
     }
 
-    
    
-
 
     private int OnCollisionEnter2D(Collision2D col)
     {

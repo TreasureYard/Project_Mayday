@@ -10,8 +10,9 @@ public class EnemyChaser : MonoBehaviour
     private Rigidbody2D rb2d;
     //private float addangle = 180;
     private SpriteRenderer SR;
+    public PlayerDetect PD;
     //public float timeCount = 0.15f;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +28,13 @@ public class EnemyChaser : MonoBehaviour
             Destroy(gameObject);
         }
 
-        transform.right = -(Player.transform.position - transform.position);
-        transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, chaseSpeed * Time.deltaTime);
+        if(PD.playerDetected && !PlayerMove.IsCloaking)
+        {
+            transform.right = -(Player.transform.position - transform.position);
+            transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, chaseSpeed * Time.deltaTime);
+        }
+
+       
 
         if(transform.eulerAngles.z > 90 && transform.eulerAngles.z < 270)
         {
@@ -38,18 +44,7 @@ public class EnemyChaser : MonoBehaviour
         {
             SR.flipY = false;
         }
-        
-        /*
-        // Get Angle in Radians
-        float AngleRad = Mathf.Atan2(transform.position.y - Player.transform.position.y, transform.position.x - Player.transform.position.x);
-
-        // Rotate Object
-        float AngleDeg = (180 / Mathf.PI) * AngleRad; // + addangle;
-        transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
-         */    
-        //rb2d.AddForce(Vector2.left * chaseSpeed, ForceMode2D.Force);
-        //Debug.Log(AngleDeg);
-
+       
        
     }
 
@@ -64,4 +59,6 @@ public class EnemyChaser : MonoBehaviour
         return health;
 
     }
+
+    
 }
