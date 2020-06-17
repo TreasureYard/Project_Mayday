@@ -48,7 +48,7 @@ public class EnemyChaser : MonoBehaviour
        
     }
 
-    private int OnCollisionEnter2D(Collision2D col)
+    private int OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "projectile")
         {
@@ -57,8 +57,7 @@ public class EnemyChaser : MonoBehaviour
         }
 
         return health;
-
     }
 
-    
+
 }

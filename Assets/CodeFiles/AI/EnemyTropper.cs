@@ -62,17 +62,17 @@ public class EnemyTropper : MonoBehaviour
           
             if (PD.playerDetected && !PlayerMove.IsCloaking)
             {
-                Debug.Log("1");
-               
+                
+                
                 Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
 
                 IsFire = true;
             }
-            else if(!PlayerMove.IsCloaking)
+            else if(!PD.playerDetected && !PlayerMove.IsCloaking)
             {
                
                 transform.rotation = Quaternion.Euler(0, 0, 0);
-                Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+                //Arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
                 SRarm.flipY = false;
                 IsFire = false;
             }
@@ -194,8 +194,9 @@ public class EnemyTropper : MonoBehaviour
     }
 
    
+    
 
-    private int OnCollisionEnter2D(Collision2D col)
+    private int OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "projectile")
         {
@@ -204,7 +205,6 @@ public class EnemyTropper : MonoBehaviour
         }
 
         return health;
-
     }
 
 }
