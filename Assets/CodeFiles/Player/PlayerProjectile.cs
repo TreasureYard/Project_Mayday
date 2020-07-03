@@ -11,7 +11,7 @@ public class PlayerProjectile : MonoBehaviour
     void Start()
     {
        rb2d = GetComponent<Rigidbody2D>();
-        Invoke("destroySelf", 100f);
+       // Invoke("destroySelf", 100f);
     }
 
     // Update is called once per frame
