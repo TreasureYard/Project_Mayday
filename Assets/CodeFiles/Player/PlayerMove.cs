@@ -30,6 +30,7 @@ public class PlayerMove : MonoBehaviour
         SR = GetComponent<SpriteRenderer>();
         originalThrust = thrust;
         rb2D = GetComponent<Rigidbody2D>();
+        
     }
 
    
@@ -131,7 +132,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
            
-            thrust = thrust * 0.995f;  
+            thrust = thrust * 0.8f;  
         }
         else
         {

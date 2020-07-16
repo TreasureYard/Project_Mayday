@@ -35,8 +35,10 @@ public class Loot : MonoBehaviour
     {
         if(followplayer)
         {
-            rb2d.AddForce((Player.transform.GetChild(1).transform.position - transform.position).normalized * objectspeed * Time.deltaTime, ForceMode2D.Force);
-            
+            this.transform.position = Player.transform.GetChild(1).transform.position;
+            //Vector2.MoveTowards(this.gameObject.transform.position, Player.transform.GetChild(1).transform.position, 30f * Time.deltaTime);
+            //rb2d.AddForce((Player.transform.GetChild(1).transform.position - transform.position).normalized * objectspeed * Time.deltaTime, ForceMode2D.Force);
+
             Debug.Log("moving");
         }
     }
